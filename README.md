@@ -1,17 +1,15 @@
-<![CDATA[<div align="center">
+<div align="center">
 
 # 🌦️ Guess Ma Weather
 
 **A hyper-modern, cinematic weather web application with Apple-grade glassmorphism, GSAP choreography, and real-time IP-based location detection.**
 
-![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=next.js&logoColor=white)
-![React](https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)
-![GSAP](https://img.shields.io/badge/GSAP-88CE02?style=for-the-badge&logo=greensock&logoColor=black)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Google Cloud](https://img.shields.io/badge/Cloud_Run-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white)
+[![Next.js 16](https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React 19](https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS_4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![GSAP](https://img.shields.io/badge/GSAP-88CE02?style=for-the-badge&logo=greensock&logoColor=black)](https://gsap.com/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 
 </div>
 
@@ -128,49 +126,35 @@ sequenceDiagram
 ## ✨ Features
 
 ### 🎭 Onboarding Experience
-- Glassmorphism modal with frosted blur over animated mesh gradient background
-- Name capture with disclaimer about the Live Visitors feed
-- Persistent sessions via `localStorage` — refreshing keeps you logged in
+- **Glassmorphism Modal** with frosted blur over an animated mesh gradient background.
+- Persistent sessions via `localStorage` (10-minute weather cache) to minimize extraneous API calls.
+- Name capture with XSS sanitization built into the API layer.
 
 ### 🌡️ Weather Dashboard
-- **Massive Temperature Display** — 16rem hero typography with GSAP counter animation from 0
-- **Dynamic Condition Labels** — "Sunny", "Clear", "Cloudy", "Rain", "Snow", "Thunderstorm" mapped from WMO codes
-- **Daily Summary Tidbits** — Contextual weather advice (e.g., "Don't forget your umbrella!")
-- **Bento Box Metrics** — Wind Speed, Humidity, and Visibility in a glass panel
-- **5-Day Forecast** — Individual glass cards with per-day icons and temperatures
+- **Massive Temperature Display** — 14rem hero typography with GSAP counter elastic animations.
+- **Dynamic Condition Labels** — Beautiful text mapping based on real-time WMO weather codes.
+- **Bento Box Metrics** — Wind Speed, Humidity, and Visibility presented in premium glass panels.
+- **5-Day Forecast** — Individual glass cards with per-day icons and temperatures floating into view.
 
 ### 🌧️ Dynamic Weather Backgrounds
-Real-time CSS-animated weather scenes rendered behind the glass UI:
-
-| Condition | Visual Effect |
-|-----------|--------------|
-| ☀️ Clear Day | Clean gradient sky |
-| 🌙 Clear Night | Twinkling animated stars |
-| ☁️ Cloudy/Fog | Drifting translucent cloud blobs |
-| 🌧️ Rain/Showers | Falling rain streaks |
-| ❄️ Snow | Softly drifting snowflakes with glow |
-| ⛈️ Thunderstorm | Heavy rain + white lightning flashes |
+Real-time CSS-animated weather scenes rendered behind the glass UI, fully GPU-composited (`will-change: transform`).
 
 ### 🪟 Apple-Grade Glassmorphism
-- `backdrop-filter: blur(50px) saturate(200%)` for realistic frosted glass
-- Directional light borders (brighter top-left) simulating physical glass thickness
-- Separate `.glass-panel` (light) and `.glass-panel-dark` (dark) variants
-- All glass panels react to the gradient behind them
+- `backdrop-filter: blur(50px) saturate(200%)` for realistic frosted glass.
+- Directional light borders simulating physical glass thickness.
+- Separate `.glass-panel` (light) and `.glass-panel-dark` (dark) variants.
 
 ### 🌓 Light & Dark Mode
-- Toggle via the Sun/Moon button in the navigation bar
-- **Dark Mode**: Deep navy gradient with dark glass panels
-- **Light Mode**: Weather-adaptive gradient backgrounds (azure for sunny, silver for cloudy, etc.)
-- Theme preference persisted to `localStorage`
+- Full Dark/Light mode theme toggle support with adaptive apple-mesh gradients.
+- **Dark Mode**: Deep navy gradient with dark glass panels.
+- **Light Mode**: Weather-adaptive gradient backgrounds (azure for sunny, silver for cloudy, etc.).
 
 ### 📳 Haptic Feedback
-- `navigator.vibrate()` API triggers on interactions (button presses, card taps, theme toggles)
-- Designed to feel like a native iOS app on supported Android devices
+- `navigator.vibrate()` triggers on interactions (button presses, card taps, theme toggles), giving a true native app feel on Android devices.
 
 ### 👥 Live Visitor Feed
-- Server-side in-memory store for the last 10 visitors
-- Displays visitor name, location, and timestamp
-- Real-time green "Live" indicator with ping animation
+- In-memory global store queue with IP rate limiting and deduplication.
+- Displays visitor name (truncated and escaped), location, and 12-hour format timestamps.
 
 ---
 
@@ -180,65 +164,19 @@ Real-time CSS-animated weather scenes rendered behind the glass UI:
 
 > **URL**: `https://api.open-meteo.com/v1/forecast`
 
-Open-Meteo is a fantastic, **free, open-source** weather API that doesn't require API keys or complex authentication, making it incredibly fast and reliable for fetching both real-time conditions and 7-day forecast data.
-
-**Endpoint Used:**
-```
-GET /v1/forecast
-  ?latitude={lat}
-  &longitude={lon}
-  &current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m,visibility,is_day
-  &daily=weather_code,temperature_2m_max,temperature_2m_min
-  &timezone=auto
-```
-
-**Response Data:**
-| Field | Description |
-|-------|-------------|
-| `current.temperature_2m` | Current temperature in °C |
-| `current.weather_code` | WMO weather interpretation code |
-| `current.wind_speed_10m` | Wind speed at 10m height (km/h) |
-| `current.relative_humidity_2m` | Relative humidity (%) |
-| `current.visibility` | Visibility distance (meters) |
-| `current.is_day` | 1 = daytime, 0 = nighttime |
-| `daily.temperature_2m_max/min` | Daily high/low temperatures |
-| `daily.weather_code` | Daily weather condition codes |
+We are using **Open-Meteo**, a robust, **free, open-source API** that requires zero authentication or API keys. It delivers incredibly fast real-time conditions and highly accurate 7-day forecast data globally.
 
 ### 🌍 ipapi.co — IP Geolocation
 
 > **URL**: `https://ipapi.co/json/`
 
-This API translates the user's public IP address into physical latitude and longitude coordinates, city name, region, and country — which are then handed to Open-Meteo for hyper-local weather fetching.
-
-**Response Data:**
-| Field | Description |
-|-------|-------------|
-| `city` | User's city (e.g., "Brampton") |
-| `region` | State/Province |
-| `country_name` | Country (e.g., "Canada") |
-| `latitude` | Geographic latitude |
-| `longitude` | Geographic longitude |
+This API translates the user's HTTP request IP address into physical latitude and longitude coordinates, allowing us to supply Open-Meteo with hyper-local coordinates instantaneously without prompting for browser GPS permissions.
 
 ---
 
 ## 🎨 Iconography
 
-We use **[Lucide React](https://lucide.dev)** (`lucide-react`) for all iconography. Lucide icons are extremely lightweight, allow us to control stroke width and opacity dynamically through CSS/Tailwind, and perfectly fit the premium Apple-like design aesthetic.
-
-Icons are dynamically mapped to WMO weather codes:
-
-| Icon Component | Usage | Weather Codes |
-|---------------|-------|---------------|
-| `Sun` / `SunMedium` | Clear, sunny days | 0 (daytime) |
-| `Moon` / `MoonStar` | Clear nights + theme toggle | 0 (nighttime) |
-| `Cloud` | Cloudy, overcast, snowy, foggy | 1–3, 45–48, 71–77 |
-| `CloudRain` | Rain and passing showers | 51–67, 80–82 |
-| `CloudLightning` | Severe thunderstorms | 95–99 |
-| `Wind` | Wind speed metric | Bento card |
-| `Droplets` | Humidity metric | Bento card |
-| `Eye` | Visibility metric | Bento card |
-| `LogOut` | Session reset button | Navigation |
-| `Clock` | Visitor timestamps | Live feed |
+We utilize **[Lucide React](https://lucide.dev)** for dynamic SVG iconography. Lucide icons are extremely lightweight, allow us to control stroke width and opacity dynamically through CSS/Tailwind, and perfectly fit the premium Apple-like design aesthetic.
 
 ---
 
@@ -249,12 +187,12 @@ Icons are dynamically mapped to WMO weather codes:
 - **Node.js** ≥ 20.x
 - **npm** ≥ 9.x
 
-### Installation
+### Quickstart
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/guessmaweather.git
-cd guessmaweather
+git clone https://github.com/thezaynahmed/GuessMaWeather.git
+cd GuessMaWeather
 
 # Install dependencies
 npm install
@@ -265,20 +203,13 @@ npm run dev
 
 The app will be available at `http://localhost:3000`.
 
-### Build for Production
-
-```bash
-npm run build
-npm start
-```
-
 ---
 
 ## 🐳 Docker & DevOps
 
-### Dockerfile
+This repository includes a highly-optimized, **production-ready multi-stage Dockerfile** designed specifically for Next.js 15+ standalone outputs and platforms like Google Cloud Run or Kubernetes.
 
-The project includes a **production-ready, multi-stage Dockerfile** optimized for Next.js deployment on Google Cloud Run:
+### Multi-Stage Build Pipeline
 
 ```mermaid
 graph LR
@@ -292,72 +223,38 @@ graph LR
     style D fill:#22c55e,stroke:#fff,color:#fff
 ```
 
-| Stage | Purpose | Key Actions |
-|-------|---------|-------------|
-| **base** | Alpine Node.js image | Minimal footprint |
-| **deps** | Dependency installation | `npm ci` for deterministic installs |
-| **builder** | Application build | `next build` with standalone output |
-| **runner** | Production runtime | Copies only standalone output traces |
+### Security & Optimization Features
+- **Standalone Output:** Next.js traces the `node_modules` and outputs a micro-bundle, dropping image size to **~150MB**.
+- **Non-Root User:** Hardened container runs as `nextjs` (UID 1001) rather than root.
+- **Docker HEALTHCHECK:** Built-in `wget` HTTP probe executing every 30s ensures container orchestrators recognize process stability.
+- **Clean Context:** Excludes `.git`, `.github`, and `.env` via strict `.dockerignore` policies.
 
-### Build & Run with Docker
+### Local Container Build
 
 ```bash
-# Build the image
+# Build the optimized production image
 docker build -t guessmaweather .
 
-# Run locally
+# Run locally on port 3000
 docker run -p 3000:3000 guessmaweather
 ```
-
-### Deploy to Google Cloud Run
-
-```bash
-# Authenticate with GCP
-gcloud auth login
-
-# Build and push to Container Registry
-gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/guessmaweather
-
-# Deploy to Cloud Run
-gcloud run deploy guessmaweather \
-  --image gcr.io/YOUR_PROJECT_ID/guessmaweather \
-  --platform managed \
-  --region us-central1 \
-  --allow-unauthenticated \
-  --port 3000
-```
-
-### .dockerignore
-
-The `.dockerignore` file explicitly excludes sensitive and unnecessary files:
-
-```
-node_modules    # Dependencies rebuilt inside container
-.next           # Build output regenerated
-.env*           # Environment secrets never shipped
-.git            # Version control history
-```
-
-### Key Configuration
-
-The `next.config.ts` is set with `output: 'standalone'` which enables Next.js to automatically trace and bundle only the files needed for production, resulting in Docker images as small as **~150MB**.
 
 ---
 
 ## 📁 Project Structure
 
 ```
-guessmaweather/
+GuessMaWeather/
 ├── src/
 │   └── app/
 │       ├── api/
 │       │   └── visitors/
-│       │       └── route.ts          # Last 10 visitors API (GET/POST)
+│       │       └── route.ts          # Last 10 visitors API (GET/POST / Rate Limited)
 │       ├── globals.css               # Glassmorphism, weather animations, mesh gradients
 │       ├── layout.tsx                # Root layout with metadata & viewport
-│       └── page.tsx                  # Main app (onboarding, dashboard, GSAP, weather scenes)
+│       └── page.tsx                  # Main app (onboarding, dashboard, GSAP, local cache)
 ├── public/                           # Static assets
-├── Dockerfile                        # Multi-stage production build
+├── Dockerfile                        # Multi-stage production build (HEALTHCHECK enabled)
 ├── .dockerignore                     # Docker exclusions
 ├── next.config.ts                    # Standalone output configuration
 ├── tailwind.config.ts                # Tailwind CSS configuration
@@ -370,19 +267,12 @@ guessmaweather/
 
 ## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is open-source and available under the [MIT License](LICENSE).
 
 ---
 
 <div align="center">
 
-**Built with ❤️ using Next.js, GSAP, Framer Motion, and Apple-grade Glassmorphism**
-
-![Next.js](https://img.shields.io/badge/Next.js-000?logo=next.js&logoColor=white&style=flat-square)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white&style=flat-square)
-![Tailwind](https://img.shields.io/badge/Tailwind-06B6D4?logo=tailwindcss&logoColor=white&style=flat-square)
-![GSAP](https://img.shields.io/badge/GSAP-88CE02?logo=greensock&logoColor=black&style=flat-square)
-![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white&style=flat-square)
+**Built with ❤️ using Next.js, GSAP, Framer Motion, and Apple-grade Glassmorphism.**
 
 </div>
-]]>
