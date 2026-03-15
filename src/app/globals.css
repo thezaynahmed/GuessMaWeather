@@ -1,26 +1,157 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #000000;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Apple Pro-Grade Glassmorphism */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(50px) saturate(200%);
+  -webkit-backdrop-filter: blur(50px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+}
+
+.glass-panel-dark {
+  background: rgba(15, 15, 15, 0.35); /* Less opaque to let vibrant colors shine through */
+  backdrop-filter: blur(50px) saturate(200%);
+  -webkit-backdrop-filter: blur(50px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Specific inputs for glass forms */
+.apple-input {
+  background: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+.apple-input:focus {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255,255,255,0.5) !important;
+}
+
+.apple-input-light {
+  background: rgba(0, 0, 0, 0.05) !important;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05) !important;
+  color: #000 !important;
+  border-color: rgba(0,0,0,0.1) !important;
+}
+.apple-input-light::placeholder {
+  color: rgba(0,0,0,0.5) !important;
+}
+.apple-input-light:focus {
+  background: rgba(0, 0, 0, 0.08) !important;
+  border-color: rgba(0,0,0,0.3) !important;
+}
+
+.apple-btn {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #000 !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+}
+.apple-btn:hover {
+  background: #ffffff !important;
+}
+
+.apple-btn-light {
+  background: rgba(0, 0, 0, 0.8) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+}
+.apple-btn-light:hover {
+  background: #000000 !important;
+}
+
+/* Animated Onboarding Mac OS style gradient */
+@keyframes appleMesh {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.apple-mesh-bg {
+  background: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #533483);
+  background-size: 300% 300%;
+  animation: appleMesh 12s ease infinite;
+}
+
+.apple-mesh-bg-dark {
+  background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #121c22);
+  background-size: 300% 300%;
+  animation: appleMesh 18s ease infinite;
+}
+
+/* Weather Effects Animations */
+@keyframes fall {
+  0% { transform: translateY(-10vh) translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(110vh) translateX(10vw); opacity: 0; }
+}
+
+.rain-drop {
+  position: absolute;
+  width: 1.5px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.6));
+  animation: fall linear infinite;
+}
+
+@keyframes snowFall {
+  0% { transform: translateY(-10vh) translateX(0); }
+  50% { transform: translateY(50vh) translateX(25px); }
+  100% { transform: translateY(110vh) translateX(-25px); }
+}
+
+.snow-flake {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: snowFall linear infinite;
+  box-shadow: 0 0 10px rgba(255,255,255,0.7);
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 8px rgba(255,255,255,0.8); }
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: starTwinkle ease-in-out infinite;
+}
+
+@keyframes cloudDrift {
+  0% { transform: translateX(-20vw); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { transform: translateX(120vw); opacity: 0; }
+}
+
+.cloud-bubble {
+  position: absolute;
+  background: rgba(255,255,255,0.25);
+  border-radius: 50%;
+  filter: blur(50px);
+  animation: cloudDrift linear infinite;
 }
